@@ -31,7 +31,7 @@ curl $IP
 cd devops-docker
 docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -p 8088:8088 gradle gradle build
 docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project -p 8088:8088 gradle gradle bootRun
-docker run -v "${PWD}/build/libs":/app java java -jar /app/gs-rest-service-0.1.0.jar
+docker run --rm -p 8088:8088 -v "${PWD}/build/libs":/app java java -jar /app/gs-rest-service-0.1.0.jar
 ```
 Chech the http://cloudip:port/greeting in your browser
 
