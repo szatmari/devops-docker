@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: httpservice
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 8088
+    targetPort: web-port
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sqlservice
+  labels:
+    app: sql
+spec:
+  selector:
+    app: sql
+  ports:
+  - port: 3306
+    targetPort: sql-port

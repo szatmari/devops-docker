@@ -1,0 +1,57 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: sql
+  labels:
+    app: sql
+spec:
+  containers:
+  - name: sql-service
+    image: mysql
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: "devops"
+    - name: MYSQL_DATABASE
+      value: "golf"
+    ports:
+    - name: sql-port
+      containerPort: 3306
+    volumeMounts:
+    - mountPath: /docker-entrypoint-initdb.d # Path of the volume in the container
+      name: db-init-volume
+  volumes:
+  - name: db-init-volume
+    hostPath:
+      path: /home/cloud/devops-docker/database
+      type: Directory
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  containers:
+  - name: web-service
+    image: gradle:4.4
+    command: ["gradle", "bootRun"]
+    env:
+    - name: DBHOST
+      value: "sql-service"
+    ports:
+    - name: web-port
+      containerPort: 8088
+    volumeMounts:
+    - mountPath: /home/gradle/project
+      name: web-volume
+    workingDir: /home/gradle/project
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+  volumes:
+  - name: web-volume
+    hostPath:
+      path: /home/cloud/devops-docker
+      type: Directory
+

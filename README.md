@@ -52,7 +52,11 @@ docker-compose up
 
 1. Test basic commands
 ```bash
-microk8s.kubectl get nodes -o wide
-microk8s.kubectl get all
-microk8s.kubectl apply -f kubernetes.yml
+microk8s.start
+microk8s.status
+kubectl get nodes -o wide
+kubectl get all
+kubectl apply -f kubernetes-specs/services.yml
+kubectl apply -f kubernetes-specs/pods.yml
+kubectl port-forward service/httpservice 8088:8088
 ```
